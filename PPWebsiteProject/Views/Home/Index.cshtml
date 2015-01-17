@@ -1,0 +1,41 @@
+﻿<div id="body">
+    <div>
+        <label for="number">Enter a number between 1 and 65 : </label>
+        <input id="number" name="number" type="text" />
+        <button id="get-factorial-button">Get Factorial</button>
+    </div>
+    <div class="hidden" id="result">
+        The factorial of <span id="number-span"></span> is <span id="factorial-span"></span>.
+    </div>
+    <div class="hidden" id="invalid">
+        Invalid input.
+    </div>
+    <div class="hidden" id="error">
+        An error occurred while computing. Please try again later.
+    </div>
+    <script>
+        $(function() {
+            $('#get-factorial-button').click(function () {
+                $.ajax({
+                    url: 'api/Factorial/GetFactorial/' + $('#number').val(),
+                    type : 'GET',
+                    success: function (data, textStatus, jqXHR) {
+                        $('#number-span').text($('#number').val());
+                        $('#factorial-span').text(data);
+                        $('#result').show();
+                        $('#error').hide();
+                        $('#invalid').hide();
+                    }, error: function (jqXHR, textStatus, errorThrown) {
+                        $('#result').hide();
+                        if (jqXHR.status == 400) {
+                            $('#invalid').show();
+                        } else {
+                            $('#error').show();
+                        }
+                }});
+            });
+        });
+
+    </script>
+
+</div>
